@@ -1,4 +1,4 @@
-package com.azrael.to_docompose.data
+package com.azrael.to_docompose.data.local
 
 import androidx.room.Dao
 import androidx.room.Delete

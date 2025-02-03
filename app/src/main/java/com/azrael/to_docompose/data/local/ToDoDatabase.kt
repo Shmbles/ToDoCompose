@@ -1,4 +1,4 @@
-package com.azrael.to_docompose.data
+package com.azrael.to_docompose.data.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
