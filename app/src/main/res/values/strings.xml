@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">To-Do Compose</string>
+
+    // ListScreen
+    <string name="add_button">Add Button</string>
+    <string name="app_bar_title">Tasks</string>
+    <string name="app_bar_content_description_search_tasks">Search Tasks</string>
+    <string name="app_bar_content_description_sort_tasks">Sort Tasks</string>
+    <string name="app_bar_content_description_delete_all_tasks">Delete All Tasks</string>
 </resources>
