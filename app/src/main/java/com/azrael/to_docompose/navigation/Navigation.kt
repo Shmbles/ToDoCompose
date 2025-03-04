@@ -1,11 +1,11 @@
-package com.azrael.to_docompose.data.navigation
+package com.azrael.to_docompose.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import com.azrael.to_docompose.data.navigation.destinations.listComposable
-import com.azrael.to_docompose.data.navigation.destinations.taskComposable
+import com.azrael.to_docompose.navigation.destinations.listComposable
+import com.azrael.to_docompose.navigation.destinations.taskComposable
 import com.azrael.to_docompose.ui.viewmodel.SharedViewModel
 import com.azrael.to_docompose.util.Constants.LIST_SCREEN
 

@@ -1,4 +1,4 @@
-package com.azrael.to_docompose.data.navigation.destinations
+package com.azrael.to_docompose.navigation.destinations
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType

@@ -7,4 +7,7 @@
     <string name="app_bar_content_description_search_tasks">Search Tasks</string>
     <string name="app_bar_content_description_sort_tasks">Sort Tasks</string>
     <string name="app_bar_content_description_delete_all_tasks">Delete All Tasks</string>
+
+    <string name="sad_face_icon">Sad Face Icon</string>
+    <string name="no_tasks_found">No Tasks Found</string>
 </resources>

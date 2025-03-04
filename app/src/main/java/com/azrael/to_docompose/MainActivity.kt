@@ -7,7 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.azrael.to_docompose.data.navigation.SetupNavigation
+import com.azrael.to_docompose.navigation.SetupNavigation
 import com.azrael.to_docompose.ui.theme.ToDoComposeTheme
 import com.azrael.to_docompose.ui.viewmodel.SharedViewModel
 import dagger.hilt.android.AndroidEntryPoint

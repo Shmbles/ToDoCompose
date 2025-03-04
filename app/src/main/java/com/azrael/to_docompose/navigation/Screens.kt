@@ -1,4 +1,4 @@
-package com.azrael.to_docompose.data.navigation
+package com.azrael.to_docompose.navigation
 
 import androidx.navigation.NavController
 import com.azrael.to_docompose.util.Action
