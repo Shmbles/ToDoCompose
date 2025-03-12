@@ -18,4 +18,5 @@
     <string name="drop_down_arrow_title">Drop Down Arrow</string>
     <string name="task_content_title">Title</string>
     <string name="task_content_description">Description</string>
+    <string name="fields_empty">The field can\'t be empty</string>
 </resources>

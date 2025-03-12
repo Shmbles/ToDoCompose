@@ -43,6 +43,7 @@ import com.azrael.to_docompose.ui.theme.topAppBarBackgroundColor
 import com.azrael.to_docompose.ui.theme.topAppBarContentColor
 import com.azrael.to_docompose.ui.theme.unfocusedContainerColor
 import com.azrael.to_docompose.ui.viewmodel.SharedViewModel
+import com.azrael.to_docompose.util.Action
 import com.azrael.to_docompose.util.SearchAppBarState
 import com.azrael.to_docompose.util.TrailingIconState
 
@@ -52,9 +53,12 @@ fun ListAppBar(
 ) {
     when (searchAppBarState) {
         SearchAppBarState.CLOSED -> {
-            DefaultListAppBar(onSearchClicked = {
-                sharedViewModel.searchAppBarState.value = SearchAppBarState.OPENED
-            }, onSortClicked = {}, onDeleteAllClicked = {})
+            DefaultListAppBar(
+                onSearchClicked = {
+                    sharedViewModel.searchAppBarState.value = SearchAppBarState.OPENED
+                },
+                onSortClicked = {},
+                onDeleteAllClicked = { sharedViewModel.action.value = Action.DELETE_ALL })
         }
 
         else -> {
@@ -67,7 +71,9 @@ fun ListAppBar(
                     sharedViewModel.searchAppBarState.value = SearchAppBarState.CLOSED
                     sharedViewModel.searchTextState.value = ""
                 },
-                onSearchClicked = {})
+                onSearchClicked = {
+                    sharedViewModel.searchDatabase(searchQuery = it)
+                })
         }
     }
 }

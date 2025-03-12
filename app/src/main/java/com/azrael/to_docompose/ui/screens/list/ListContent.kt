@@ -26,15 +26,32 @@ import com.azrael.to_docompose.ui.theme.TASK_ITEM_ELEVATION
 import com.azrael.to_docompose.ui.theme.taskItemBackgroundColor
 import com.azrael.to_docompose.ui.theme.taskItemTextColor
 import com.azrael.to_docompose.util.RequestState
+import com.azrael.to_docompose.util.SearchAppBarState
 
 @Composable
-fun ListContent(tasks: RequestState<List<ToDoTask>>, navigateToTaskScreen: (taskId: Int) -> Unit) {
-    if (tasks is RequestState.Success) {
-        if (tasks.data.isEmpty()) {
-            EmptyContent()
-        } else {
-            DisplayTasks(tasks = tasks.data, navigateToTaskScreen = navigateToTaskScreen)
+fun ListContent(
+    allTasks: RequestState<List<ToDoTask>>,
+    searchedTasks: RequestState<List<ToDoTask>>,
+    searchAppBarState: SearchAppBarState,
+    navigateToTaskScreen: (taskId: Int) -> Unit
+) {
+    if (searchAppBarState == SearchAppBarState.TRIGGERED) {
+        if (searchedTasks is RequestState.Success) {
+            HandleListContent(searchedTasks.data, navigateToTaskScreen)
         }
+    } else {
+        if (allTasks is RequestState.Success) {
+            HandleListContent(allTasks.data, navigateToTaskScreen)
+        }
+    }
+}
+
+@Composable
+fun HandleListContent(tasks: List<ToDoTask>, navigateToTaskScreen: (taskId: Int) -> Unit) {
+    if (tasks.isEmpty()) {
+        EmptyContent()
+    } else {
+        DisplayTasks(tasks = tasks, navigateToTaskScreen = navigateToTaskScreen)
     }
 }
 
