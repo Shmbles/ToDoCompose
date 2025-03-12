@@ -1,13 +1,15 @@
 <resources>
     <string name="app_name">To-Do Compose</string>
 
-    // ListScreen
+    <string name="delete_task">Remove \'%1$s\'?</string>
+    <string name="delete_task_confirmation">Are you sure you want to remove \'%1$s\'?</string>
+    <string name="delete_all_task">Remove All Tasks?</string>
+    <string name="delete_all_task_confirmation">Are you sure you want to remove all tasks? There is no going back.</string>
     <string name="add_button">Add Button</string>
     <string name="app_bar_title">Tasks</string>
     <string name="app_bar_content_description_search_tasks">Search Tasks</string>
     <string name="app_bar_content_description_sort_tasks">Sort Tasks</string>
     <string name="app_bar_content_description_delete_all_tasks">Delete All Tasks</string>
-
     <string name="sad_face_icon">Sad Face Icon</string>
     <string name="no_tasks_found">No Tasks Found</string>
     <string name="add_task_title">Add Task</string>
@@ -19,4 +21,6 @@
     <string name="task_content_title">Title</string>
     <string name="task_content_description">Description</string>
     <string name="fields_empty">The field can\'t be empty</string>
+    <string name="alert_dialog_yes_response">Yes</string>
+    <string name="alert_dialog_no_response">No</string>
 </resources>
