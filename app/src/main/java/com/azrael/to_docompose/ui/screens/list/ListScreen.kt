@@ -35,6 +35,7 @@ import kotlinx.coroutines.launch
 fun ListScreen(navigateToTaskScreen: (taskId: Int) -> Unit, sharedViewModel: SharedViewModel) {
     LaunchedEffect(key1 = true) {
         sharedViewModel.getAllTasks()
+        sharedViewModel.readSortState()
     }
 
     val action by sharedViewModel.action
@@ -43,12 +44,15 @@ fun ListScreen(navigateToTaskScreen: (taskId: Int) -> Unit, sharedViewModel: Sha
     val searchedTasks by sharedViewModel.searchedTasks.collectAsState()
     val searchAppBarState: SearchAppBarState by sharedViewModel.searchAppBarState
     val searTextState: String by sharedViewModel.searchTextState
+    val sortState by sharedViewModel.sortState.collectAsState()
+    val lowPriorityTasks by sharedViewModel.lowPriorityTasks.collectAsState()
+    val highPriorityTasks by sharedViewModel.highPriorityTasks.collectAsState()
 
-    val snackbarHostState = rememberBottomSheetScaffoldState().snackbarHostState
+    val snackBarHostState = rememberBottomSheetScaffoldState().snackbarHostState
 
     sharedViewModel.handleDatabaseActions(action)
     DisplaySnackBar(
-        snackbarHostState,
+        snackBarHostState,
         { sharedViewModel.handleDatabaseActions(action) },
         { sharedViewModel.action.value = it },
         sharedViewModel.title.value,
@@ -56,7 +60,7 @@ fun ListScreen(navigateToTaskScreen: (taskId: Int) -> Unit, sharedViewModel: Sha
     )
 
     Scaffold(
-        snackbarHost = { SnackbarHost(snackbarHostState) },
+        snackbarHost = { SnackbarHost(snackBarHostState) },
         topBar = { ListAppBar(sharedViewModel, searchAppBarState, searTextState) },
         floatingActionButton = {
             ListFab(onFabClicked = navigateToTaskScreen)
@@ -69,7 +73,10 @@ fun ListScreen(navigateToTaskScreen: (taskId: Int) -> Unit, sharedViewModel: Sha
                 allTasks = allTasks,
                 searchedTasks,
                 searchAppBarState,
-                navigateToTaskScreen = navigateToTaskScreen
+                navigateToTaskScreen = navigateToTaskScreen,
+                lowPriorityTasks,
+                highPriorityTasks,
+                sortState
             )
         }
     }

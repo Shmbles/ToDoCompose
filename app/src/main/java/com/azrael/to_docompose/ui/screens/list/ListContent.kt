@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import com.azrael.to_docompose.data.model.Priority
 import com.azrael.to_docompose.data.model.ToDoTask
 import com.azrael.to_docompose.ui.theme.LARGE_PADDING
 import com.azrael.to_docompose.ui.theme.PRIORITY_INDICATOR_SIZE
@@ -33,15 +34,32 @@ fun ListContent(
     allTasks: RequestState<List<ToDoTask>>,
     searchedTasks: RequestState<List<ToDoTask>>,
     searchAppBarState: SearchAppBarState,
-    navigateToTaskScreen: (taskId: Int) -> Unit
+    navigateToTaskScreen: (taskId: Int) -> Unit,
+    lowPriorityTasks: List<ToDoTask>,
+    highPriorityTasks: List<ToDoTask>,
+    sortState: RequestState<Priority>
 ) {
-    if (searchAppBarState == SearchAppBarState.TRIGGERED) {
-        if (searchedTasks is RequestState.Success) {
-            HandleListContent(searchedTasks.data, navigateToTaskScreen)
-        }
-    } else {
-        if (allTasks is RequestState.Success) {
-            HandleListContent(allTasks.data, navigateToTaskScreen)
+    if (sortState is RequestState.Success) {
+        when {
+            searchAppBarState == SearchAppBarState.TRIGGERED -> {
+                if (searchedTasks is RequestState.Success) {
+                    HandleListContent(searchedTasks.data, navigateToTaskScreen)
+                }
+            }
+
+            sortState.data == Priority.NONE -> {
+                if (allTasks is RequestState.Success) {
+                    HandleListContent(allTasks.data, navigateToTaskScreen)
+                }
+            }
+
+            sortState.data == Priority.LOW -> {
+                HandleListContent(lowPriorityTasks, navigateToTaskScreen)
+            }
+
+            sortState.data == Priority.HIGH -> {
+                HandleListContent(highPriorityTasks, navigateToTaskScreen)
+            }
         }
     }
 }
@@ -124,7 +142,7 @@ fun TaskItemPreview() {
             id = 0,
             title = "Title",
             description = "Some random text",
-            priority = com.azrael.to_docompose.data.model.Priority.MEDIUM
+            priority = Priority.MEDIUM
         ),
         navigateToTaskScreen = {}
     )
