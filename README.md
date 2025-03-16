@@ -16,9 +16,10 @@
 - ✔️ Light and dark theme support 
 
 ## 📸 Application  
-![part1](https://github.com/user-attachments/assets/a3268fc3-527f-4091-b684-da2dbcb238c0)
-![part2](https://github.com/user-attachments/assets/468be3d3-9dca-4718-ac59-44ae2391ab9d)
-![part3](https://github.com/user-attachments/assets/18d98b23-1158-4f8e-97b5-b0bc8ff48554) 
+| ![part1](https://github.com/user-attachments/assets/a3268fc3-527f-4091-b684-da2dbcb238c0) | ![part2](https://github.com/user-attachments/assets/468be3d3-9dca-4718-ac59-44ae2391ab9d) | ![part3](https://github.com/user-attachments/assets/18d98b23-1158-4f8e-97b5-b0bc8ff48554)
+|---|---|---|
+| Screenrecord 1 | Screenrecord 2 | Screenrecord 3
+
 
 ## 🛠️ Technologies Used  
 <p align="left">
