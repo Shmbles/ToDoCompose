@@ -44,10 +44,7 @@ fun DisplayAlertDialog(
                 }
             },
             dismissButton = {
-                OutlinedButton(
-                    onClick = {
-                        closeDialog()
-                    }) {
+                OutlinedButton(onClick = { closeDialog() }) {
                     Text(text = stringResource(R.string.alert_dialog_no_response))
                 }
             },

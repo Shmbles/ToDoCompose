@@ -17,7 +17,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.azrael.to_docompose.R
-import com.azrael.to_docompose.ui.theme.MediumGray
 
 @Composable
 fun EmptyContent() {
@@ -31,14 +30,14 @@ fun EmptyContent() {
         Icon(
             modifier = Modifier.size(120.dp),
             painter = painterResource(id = R.drawable.ic_sad_face),
-            contentDescription = stringResource(R.string.sad_face_icon),
-            tint = MediumGray
+            contentDescription = stringResource(id = R.string.sad_face_icon),
+            tint = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f)
         )
         Text(
-            text = stringResource(R.string.no_tasks_found),
-            color = MediumGray,
+            text = stringResource(id = R.string.empty_content),
+            color = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f),
             fontWeight = FontWeight.Bold,
-            fontSize = MaterialTheme.typography.headlineMedium.fontSize
+            fontSize = MaterialTheme.typography.titleSmall.fontSize
         )
     }
 }

@@ -1,17 +1,13 @@
 package com.azrael.to_docompose.navigation
 
-import androidx.navigation.NavController
 import com.azrael.to_docompose.util.Action
-import com.azrael.to_docompose.util.Constants.LIST_SCREEN
+import kotlinx.serialization.Serializable
 
-class Screens(navController: NavController) {
-    val list: (Action) -> Unit = { action ->
-        navController.navigate("list/${action.name}") {
-            popUpTo(LIST_SCREEN) { inclusive = true }
-        }
-    }
+@Serializable
+sealed class Screen {
+    @Serializable
+    data class List(val action: Action = Action.NO_ACTION) : Screen()
 
-    val task: (Int) -> Unit = { taskId ->
-        navController.navigate("task/$taskId")
-    }
+    @Serializable
+    data class Task(val id: Int) : Screen()
 }

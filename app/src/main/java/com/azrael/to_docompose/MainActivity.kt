@@ -3,8 +3,8 @@ package com.azrael.to_docompose
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.azrael.to_docompose.navigation.SetupNavigation
@@ -19,11 +19,11 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        installSplashScreen()
         setContent {
             ToDoComposeTheme {
                 navController = rememberNavController()
-                SetupNavigation(navController = navController, sharedviewmodel = sharedViewModel)
+                SetupNavigation(navController = navController, sharedViewModel = sharedViewModel)
             }
         }
     }

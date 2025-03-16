@@ -11,9 +11,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.azrael.to_docompose.data.model.Priority
-import com.azrael.to_docompose.ui.theme.LARGE_PADDING
+import com.azrael.to_docompose.ui.theme.LARGE_DP
 import com.azrael.to_docompose.ui.theme.PRIORITY_INDICATOR_SIZE
-import com.azrael.to_docompose.ui.theme.Typography
 
 @Composable
 fun PriorityItem(priority: Priority) {
@@ -22,9 +21,9 @@ fun PriorityItem(priority: Priority) {
             drawCircle(color = priority.color)
         }
         Text(
-            modifier = Modifier.padding(LARGE_PADDING),
+            modifier = Modifier.padding(LARGE_DP),
             text = priority.name,
-            style = Typography.titleMedium,
+            style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onSurface
         )
     }

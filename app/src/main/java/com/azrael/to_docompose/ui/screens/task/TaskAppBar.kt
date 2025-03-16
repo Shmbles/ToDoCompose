@@ -1,7 +1,7 @@
 package com.azrael.to_docompose.ui.screens.task
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
@@ -24,16 +24,14 @@ import com.azrael.to_docompose.R
 import com.azrael.to_docompose.components.DisplayAlertDialog
 import com.azrael.to_docompose.data.model.Priority
 import com.azrael.to_docompose.data.model.ToDoTask
-import com.azrael.to_docompose.ui.theme.topAppBarBackgroundColor
-import com.azrael.to_docompose.ui.theme.topAppBarContentColor
 import com.azrael.to_docompose.util.Action
 
 @Composable
 fun TaskAppBar(selectedTask: ToDoTask?, navigateToListScreen: (Action) -> Unit) {
     if (selectedTask == null) {
-        NewTaskAppBar(navigateToListScreen)
+        NewTaskAppBar(navigateToListScreen = navigateToListScreen)
     } else {
-        EditTaskAppBar(selectedTask, navigateToListScreen)
+        EditTaskAppBar(selectedTask = selectedTask, navigateToListScreen = navigateToListScreen)
     }
 }
 
@@ -42,15 +40,15 @@ fun TaskAppBar(selectedTask: ToDoTask?, navigateToListScreen: (Action) -> Unit) 
 @Composable
 fun NewTaskAppBar(navigateToListScreen: (Action) -> Unit) {
     TopAppBar(
-        navigationIcon = { BackAction(navigateToListScreen) },
+        navigationIcon = { BackAction(onBackClicked = navigateToListScreen) },
         title = {
             Text(
                 text = stringResource(R.string.add_task_title),
-                color = MaterialTheme.colorScheme.topAppBarContentColor
+                color = MaterialTheme.colorScheme.onPrimary
             )
         },
-        colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.topAppBarBackgroundColor),
-        actions = { AddAction(navigateToListScreen) }
+        colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.primary),
+        actions = { AddAction(onAddClicked = navigateToListScreen) }
     )
 }
 
@@ -58,9 +56,9 @@ fun NewTaskAppBar(navigateToListScreen: (Action) -> Unit) {
 fun BackAction(onBackClicked: (Action) -> Unit) {
     IconButton(onClick = { onBackClicked(Action.NO_ACTION) }) {
         Icon(
-            imageVector = Icons.Filled.ArrowBack,
+            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
             contentDescription = stringResource(R.string.back_arrow_title),
-            tint = MaterialTheme.colorScheme.topAppBarContentColor
+            tint = MaterialTheme.colorScheme.onPrimary
         )
     }
 }
@@ -71,7 +69,7 @@ fun AddAction(onAddClicked: (Action) -> Unit) {
         Icon(
             imageVector = Icons.Filled.Check,
             contentDescription = stringResource(R.string.add_task_title),
-            tint = MaterialTheme.colorScheme.topAppBarContentColor
+            tint = MaterialTheme.colorScheme.onPrimary
         )
     }
 }
@@ -80,16 +78,16 @@ fun AddAction(onAddClicked: (Action) -> Unit) {
 @Composable
 fun EditTaskAppBar(selectedTask: ToDoTask, navigateToListScreen: (Action) -> Unit) {
     TopAppBar(
-        navigationIcon = { CloseAction(navigateToListScreen) },
+        navigationIcon = { CloseAction(onCloseClicked = navigateToListScreen) },
         title = {
             Text(
                 text = selectedTask.title,
-                color = MaterialTheme.colorScheme.topAppBarContentColor,
+                color = MaterialTheme.colorScheme.onPrimary,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
         },
-        colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.topAppBarBackgroundColor),
+        colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.primary),
         actions = {
             ExistingTaskAppBarAction(selectedTask, navigateToListScreen)
         }
@@ -102,7 +100,7 @@ fun CloseAction(onCloseClicked: (Action) -> Unit) {
         Icon(
             imageVector = Icons.Filled.Close,
             contentDescription = stringResource(R.string.close_icon_title),
-            tint = MaterialTheme.colorScheme.topAppBarContentColor
+            tint = MaterialTheme.colorScheme.onPrimary
         )
     }
 }
@@ -120,7 +118,7 @@ fun ExistingTaskAppBarAction(selectedTask: ToDoTask, navigateToListScreen: (Acti
     )
 
     DeleteAction(onDeleteClicked = { openDialog = true })
-    UpdateAction(navigateToListScreen)
+    UpdateAction(onUpdateClicked = navigateToListScreen)
 }
 
 @Composable
@@ -129,7 +127,7 @@ fun DeleteAction(onDeleteClicked: () -> Unit) {
         Icon(
             imageVector = Icons.Filled.Delete,
             contentDescription = stringResource(R.string.delete_icon_title),
-            tint = MaterialTheme.colorScheme.topAppBarContentColor
+            tint = MaterialTheme.colorScheme.onPrimary
         )
     }
 }
@@ -140,7 +138,7 @@ fun UpdateAction(onUpdateClicked: (Action) -> Unit) {
         Icon(
             imageVector = Icons.Filled.Check,
             contentDescription = stringResource(R.string.update_icon_title),
-            tint = MaterialTheme.colorScheme.topAppBarContentColor
+            tint = MaterialTheme.colorScheme.onPrimary
         )
     }
 }

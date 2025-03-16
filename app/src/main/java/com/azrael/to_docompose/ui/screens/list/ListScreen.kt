@@ -1,62 +1,55 @@
 package com.azrael.to_docompose.ui.screens.list
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
-import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.azrael.to_docompose.R
-import com.azrael.to_docompose.ui.theme.TOP_APP_BAR_HEIGHT
-import com.azrael.to_docompose.ui.theme.fabBackgroundColor
 import com.azrael.to_docompose.ui.viewmodel.SharedViewModel
 import com.azrael.to_docompose.util.Action
 import com.azrael.to_docompose.util.SearchAppBarState
-import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun ListScreen(navigateToTaskScreen: (taskId: Int) -> Unit, sharedViewModel: SharedViewModel) {
-    LaunchedEffect(key1 = true) {
-        sharedViewModel.getAllTasks()
-        sharedViewModel.readSortState()
-    }
-
-    val action by sharedViewModel.action
+fun ListScreen(
+    navigateToTaskScreen: (taskId: Int) -> Unit,
+    sharedViewModel: SharedViewModel,
+    action: Action
+) {
+    LaunchedEffect(key1 = action) { sharedViewModel.handleDatabaseActions(action) }
 
     val allTasks by sharedViewModel.allTasks.collectAsState()
     val searchedTasks by sharedViewModel.searchedTasks.collectAsState()
-    val searchAppBarState: SearchAppBarState by sharedViewModel.searchAppBarState
-    val searTextState: String by sharedViewModel.searchTextState
+
     val sortState by sharedViewModel.sortState.collectAsState()
     val lowPriorityTasks by sharedViewModel.lowPriorityTasks.collectAsState()
     val highPriorityTasks by sharedViewModel.highPriorityTasks.collectAsState()
 
-    val snackBarHostState = rememberBottomSheetScaffoldState().snackbarHostState
+    val searchAppBarState: SearchAppBarState = sharedViewModel.searchAppBarState
+    val searTextState: String = sharedViewModel.searchTextState
 
-    sharedViewModel.handleDatabaseActions(action)
+    val snackBarHostState = remember { SnackbarHostState() }
+
     DisplaySnackBar(
-        snackBarHostState,
-        { sharedViewModel.handleDatabaseActions(action) },
-        { sharedViewModel.action.value = it },
-        sharedViewModel.title.value,
-        action
+        snackBarHostState = snackBarHostState,
+        onComplete = { sharedViewModel.updateAction(it) },
+        onUndoClicked = { sharedViewModel.updateAction(it) },
+        taskTitle = sharedViewModel.title,
+        action = action
     )
 
     Scaffold(
@@ -64,32 +57,34 @@ fun ListScreen(navigateToTaskScreen: (taskId: Int) -> Unit, sharedViewModel: Sha
         topBar = { ListAppBar(sharedViewModel, searchAppBarState, searTextState) },
         floatingActionButton = {
             ListFab(onFabClicked = navigateToTaskScreen)
-        }
-    ) {
-        Column(
-            modifier = Modifier.padding(top = TOP_APP_BAR_HEIGHT)
-        ) {
+        },
+        content = { padding ->
             ListContent(
+                modifier = Modifier.padding(
+                    top = padding.calculateTopPadding(),
+                    bottom = padding.calculateBottomPadding()
+                ),
                 allTasks = allTasks,
                 searchedTasks,
                 searchAppBarState,
-                navigateToTaskScreen = navigateToTaskScreen,
+                navigateToTaskScreen,
                 lowPriorityTasks,
                 highPriorityTasks,
-                sortState
+                sortState,
+                onSwipeToDelete = { action, task ->
+                    sharedViewModel.updateAction(action)
+                    sharedViewModel.updateTaskFields(task)
+                    snackBarHostState.currentSnackbarData?.dismiss()
+                }
             )
         }
-    }
+    )
 }
 
 @Composable
 fun ListFab(onFabClicked: (taskId: Int) -> Unit) {
     FloatingActionButton(
-        onClick = {
-            onFabClicked(-1)
-        },
-        containerColor = MaterialTheme.colorScheme.fabBackgroundColor
-    ) {
+        onClick = { onFabClicked(-1) }) {
         Icon(
             imageVector = Icons.Filled.Add,
             contentDescription = stringResource(R.string.add_button)
@@ -99,22 +94,23 @@ fun ListFab(onFabClicked: (taskId: Int) -> Unit) {
 
 @Composable
 fun DisplaySnackBar(
-    snackbarHostState: SnackbarHostState,
-    handleDatabaseActions: () -> Unit,
+    snackBarHostState: SnackbarHostState,
+    onComplete: (Action) -> Unit,
     onUndoClicked: (Action) -> Unit,
     taskTitle: String,
     action: Action
 ) {
-    handleDatabaseActions()
-    val scope = rememberCoroutineScope()
     LaunchedEffect(key1 = action) {
         if (action != Action.NO_ACTION) {
-            scope.launch {
-                val snackBarResult = snackbarHostState.showSnackbar(
-                    message = setMessage(action, taskTitle),
-                    actionLabel = setActionLabel(action)
-                )
-                undoDeletedTask(action, snackBarResult, onUndoClicked)
+            val snackBarResult = snackBarHostState.showSnackbar(
+                message = setMessage(action, taskTitle),
+                actionLabel = setActionLabel(action),
+                duration = SnackbarDuration.Short
+            )
+            if (snackBarResult == SnackbarResult.ActionPerformed && action == Action.DELETE) {
+                onUndoClicked(Action.UNDO)
+            } else if (snackBarResult == SnackbarResult.Dismissed && action == Action.DELETE) {
+                onComplete(Action.NO_ACTION)
             }
         }
     }
@@ -132,15 +128,5 @@ private fun setActionLabel(action: Action): String {
         "UNDO"
     } else {
         "OK"
-    }
-}
-
-private fun undoDeletedTask(
-    action: Action,
-    snackBarResult: SnackbarResult,
-    onUndoClicked: (Action) -> Unit
-) {
-    if (snackBarResult == SnackbarResult.ActionPerformed && action == Action.DELETE) {
-        onUndoClicked(Action.UNDO)
     }
 }

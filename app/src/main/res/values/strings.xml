@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">To-Do Compose</string>
-
     <string name="delete_task">Remove \'%1$s\'?</string>
     <string name="delete_task_confirmation">Are you sure you want to remove \'%1$s\'?</string>
     <string name="delete_all_task">Remove All Tasks?</string>
@@ -23,4 +22,6 @@
     <string name="fields_empty">The field can\'t be empty</string>
     <string name="alert_dialog_yes_response">Yes</string>
     <string name="alert_dialog_no_response">No</string>
+    <string name="angle_animation_label">Angle Animation</string>
+    <string name="empty_content">No Tasks Found.</string>
 </resources>
